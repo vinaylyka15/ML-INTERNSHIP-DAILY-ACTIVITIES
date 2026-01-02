@@ -1,0 +1,759 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "fc1f035f-6e3f-4870-9e08-3a8e13586846",
+   "metadata": {},
+   "source": [
+    "# Feature creation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "d8351ebe-ddb2-46e2-921b-961ec5ab574b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>science</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>42</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>58</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>68</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>78</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>88</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  science\n",
+       "0           2          60     40       42\n",
+       "1           4          70     55       58\n",
+       "2           6          80     65       68\n",
+       "3           8          90     75       78\n",
+       "4          10          95     80       88"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "df=pd.DataFrame({\n",
+    "    \"study_hour\":[2,4,6,8,10],\n",
+    "    \"attendance\":[60,70,80,90,95],\n",
+    "    \"maths\":[40,55,65,75,80],\n",
+    "    \"science\":[42,58,68,78,88]\n",
+    "})\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "81dc7085-0629-4341-a563-ab63b87fc874",
+   "metadata": {},
+   "source": [
+    "# Domain Based Feature"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "fe1b8501-0534-4c0e-a331-27a756e0dc80",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>science</th>\n",
+       "      <th>total_marks</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>42</td>\n",
+       "      <td>82</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>58</td>\n",
+       "      <td>113</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>68</td>\n",
+       "      <td>133</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>78</td>\n",
+       "      <td>153</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>88</td>\n",
+       "      <td>168</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  science  total_marks\n",
+       "0           2          60     40       42           82\n",
+       "1           4          70     55       58          113\n",
+       "2           6          80     65       68          133\n",
+       "3           8          90     75       78          153\n",
+       "4          10          95     80       88          168"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"total_marks\"]=df[\"maths\"]+df[\"science\"]\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3488b15c-35c6-4ae3-9eca-8ba788c05aa3",
+   "metadata": {},
+   "source": [
+    " # Mathematical features"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "ba06ff9c-67fb-483c-a11c-ca2bba80b6a8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>science</th>\n",
+       "      <th>total_marks</th>\n",
+       "      <th>marks_per_hour</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>42</td>\n",
+       "      <td>82</td>\n",
+       "      <td>41.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>58</td>\n",
+       "      <td>113</td>\n",
+       "      <td>28.250000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>68</td>\n",
+       "      <td>133</td>\n",
+       "      <td>22.166667</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>78</td>\n",
+       "      <td>153</td>\n",
+       "      <td>19.125000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>88</td>\n",
+       "      <td>168</td>\n",
+       "      <td>16.800000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  science  total_marks  marks_per_hour\n",
+       "0           2          60     40       42           82       41.000000\n",
+       "1           4          70     55       58          113       28.250000\n",
+       "2           6          80     65       68          133       22.166667\n",
+       "3           8          90     75       78          153       19.125000\n",
+       "4          10          95     80       88          168       16.800000"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"marks_per_hour\"]=df[\"total_marks\"]/df[\"study_hour\"]\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "37aa02c0-c9b7-48ee-bba2-a5d64511eb69",
+   "metadata": {},
+   "source": [
+    "# Interaction Feature"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "b2f1ba7e-0093-4efd-b794-58dcfd9e9769",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>science</th>\n",
+       "      <th>total_marks</th>\n",
+       "      <th>marks_per_hour</th>\n",
+       "      <th>study_attendance_interaction</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>42</td>\n",
+       "      <td>82</td>\n",
+       "      <td>41.000000</td>\n",
+       "      <td>120</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>58</td>\n",
+       "      <td>113</td>\n",
+       "      <td>28.250000</td>\n",
+       "      <td>280</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>68</td>\n",
+       "      <td>133</td>\n",
+       "      <td>22.166667</td>\n",
+       "      <td>480</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>78</td>\n",
+       "      <td>153</td>\n",
+       "      <td>19.125000</td>\n",
+       "      <td>720</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>88</td>\n",
+       "      <td>168</td>\n",
+       "      <td>16.800000</td>\n",
+       "      <td>950</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  science  total_marks  marks_per_hour  \\\n",
+       "0           2          60     40       42           82       41.000000   \n",
+       "1           4          70     55       58          113       28.250000   \n",
+       "2           6          80     65       68          133       22.166667   \n",
+       "3           8          90     75       78          153       19.125000   \n",
+       "4          10          95     80       88          168       16.800000   \n",
+       "\n",
+       "   study_attendance_interaction  \n",
+       "0                           120  \n",
+       "1                           280  \n",
+       "2                           480  \n",
+       "3                           720  \n",
+       "4                           950  "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"study_attendance_interaction\"]=df[\"study_hour\"]*df[\"attendance\"]\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9976e7fc-0865-4c2d-8f29-aefe1ab72c1e",
+   "metadata": {},
+   "source": [
+    "# Polynomial Feature"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "40504509-49c6-41c0-8be6-a1974e7386ca",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>science</th>\n",
+       "      <th>study_hours_square</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>42</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>58</td>\n",
+       "      <td>16</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>68</td>\n",
+       "      <td>36</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>78</td>\n",
+       "      <td>64</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>88</td>\n",
+       "      <td>100</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  science  study_hours_square\n",
+       "0           2          60     40       42                   4\n",
+       "1           4          70     55       58                  16\n",
+       "2           6          80     65       68                  36\n",
+       "3           8          90     75       78                  64\n",
+       "4          10          95     80       88                 100"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"study_hours_square\"]=df[\"study_hour\"]**2\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "58a7363e-d3c2-4cc6-87df-5e0ae7331771",
+   "metadata": {},
+   "source": [
+    "# Feature Selection"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "5b786028-562f-4537-bdbf-8065f49561f3",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    42\n",
+       "1    58\n",
+       "2    68\n",
+       "3    78\n",
+       "4    88\n",
+       "Name: science, dtype: int64"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x=df.drop(\"science\",axis=1)\n",
+    "y=df[\"science\"]\n",
+    "y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "67851a3c-7dec-4cb5-96cb-38b24c508ded",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>study_hour</th>\n",
+       "      <th>attendance</th>\n",
+       "      <th>maths</th>\n",
+       "      <th>study_hours_square</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2</td>\n",
+       "      <td>60</td>\n",
+       "      <td>40</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>4</td>\n",
+       "      <td>70</td>\n",
+       "      <td>55</td>\n",
+       "      <td>16</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>6</td>\n",
+       "      <td>80</td>\n",
+       "      <td>65</td>\n",
+       "      <td>36</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>8</td>\n",
+       "      <td>90</td>\n",
+       "      <td>75</td>\n",
+       "      <td>64</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>10</td>\n",
+       "      <td>95</td>\n",
+       "      <td>80</td>\n",
+       "      <td>100</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   study_hour  attendance  maths  study_hours_square\n",
+       "0           2          60     40                   4\n",
+       "1           4          70     55                  16\n",
+       "2           6          80     65                  36\n",
+       "3           8          90     75                  64\n",
+       "4          10          95     80                 100"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2102756f-0ad9-4207-84a6-bd7d6eb13853",
+   "metadata": {},
+   "source": [
+    "# Filter methods (statistics _based)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b9e68f2c-55c5-452d-af29-bfc6e6d46d5d",
+   "metadata": {},
+   "source": [
+    "# correlation method"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "ce55e15d-be33-4189-b454-caeb1b8b4c7e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "science               1.000000\n",
+       "maths                 0.995467\n",
+       "study_hour            0.994309\n",
+       "attendance            0.994110\n",
+       "study_hours_square    0.958102\n",
+       "Name: science, dtype: float64"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.corr()[\"science\"].sort_values(ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c0eea22d-e074-4ed0-891a-6cb436d55563",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# "
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
